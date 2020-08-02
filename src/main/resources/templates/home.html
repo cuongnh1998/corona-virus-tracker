@@ -1,0 +1,67 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<title>CoronaVirus Tracker</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="text-center">
+        <h1>Coronavirus Tracker Application</h1>
+        <p>This application lists the current number of cases reported across the globe</p>
+    </div>
+    <div class="jumbotron">
+        <div style="text-align: center">
+            <h1 class="lead">Total cases reported as of today</h1>
+            <h1 class="display-4" th:text="${totalReportedCases}"></h1>.
+        </div>
+        <hr class="my-4">
+        <div style="text-align: center">
+            <h1>New cases reported since previous day:</h1>
+            <h1 th:text="${totalNewCases}"></h1>
+            </p>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover" id="table">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th>State</th>
+            <th>County</th>
+            <th>Total Case</th>
+            <th>Changes since last day</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="locationStats,state : ${locationStatses}" th>
+            <th th:text="${state.index + 1}"></th>
+            <th th:text="${locationStats.state}"></th>
+            <th th:text="${locationStats.country}" style="color: cornflowerblue;"></th>
+            <th th:text="${locationStats.latestTotalCase}">0</th>
+            <th th:if="${locationStats.diffFromPrevDay}>0" th:text="'+'+ ${locationStats.diffFromPrevDay}"
+                style="background-color: #FFEEAA;">0
+            </th>
+            <th th:if="${locationStats.diffFromPrevDay} <=0"></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container text-center">
+    <h4>Design By Ninh Hoang Cuong</h4>
+    <h4>Email : ninhhoangcuongtnnd15@gmail.com</h4>
+    <h4>Thank Java Brains Support </h4>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>
