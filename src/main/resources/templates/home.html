@@ -1,7 +1,6 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
 <meta charset="UTF-8">
 <title>CoronaVirus Tracker</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -16,12 +15,12 @@
     <div class="jumbotron">
         <div style="text-align: center">
             <h1 class="lead">Total cases reported as of today</h1>
-            <h1 class="display-4" th:text="${totalReportedCases}"></h1>.
+            <h1 class="display-4" th:text="${#numbers.formatDecimal(totalReportedCases,3,'COMMA',0,'POINT')}"></h1>.
         </div>
         <hr class="my-4">
         <div style="text-align: center">
             <h1>New cases reported since previous day:</h1>
-            <h1 th:text="${totalNewCases}"></h1>
+            <h1 th:text="${#numbers.formatDecimal(totalNewCases,3,'COMMA',0,'POINT')}"></h1>
             </p>
         </div>
     </div>
@@ -29,22 +28,25 @@
         <thead class="thead-light">
         <tr>
             <th>#</th>
-            <th>State</th>
+<!--            <th>State</th>-->
             <th>County</th>
             <th>Total Case</th>
             <th>Changes since last day</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="locationStats,state : ${locationStatses}" th>
+        <tr th:each="locationStats,state : ${report}">
             <th th:text="${state.index + 1}"></th>
-            <th th:text="${locationStats.state}"></th>
-            <th th:text="${locationStats.country}" style="color: cornflowerblue;"></th>
-            <th th:text="${locationStats.latestTotalCase}">0</th>
-            <th th:if="${locationStats.diffFromPrevDay}>0" th:text="'+'+ ${locationStats.diffFromPrevDay}"
+            <th th:text="${locationStats.key}" style="color: cornflowerblue;"></th>
+            <th th:if="${locationStats.value.latestTotalCase &gt; 99}" th:text="${#numbers.formatDecimal(locationStats.value.latestTotalCase,3,'COMMA',0,'POINT')}">0</th>
+            <th th:if="${locationStats.value.latestTotalCase &lt; 100}" th:text="${locationStats.value.latestTotalCase}">0</th>
+            <th th:if="${locationStats.value.diffFromPrevDay}>99" th:text="'+'+ ${#numbers.formatInteger(locationStats.value.diffFromPrevDay,3,'POINT')}"
                 style="background-color: #FFEEAA;">0
             </th>
-            <th th:if="${locationStats.diffFromPrevDay} <=0"></th>
+            <th th:if="${locationStats.value.diffFromPrevDay &lt; 100 and locationStats.value.diffFromPrevDay &gt; 0} " th:text="'+'+ ${locationStats.value.diffFromPrevDay}"
+                style="background-color: #FFEEAA;">0
+            </th>
+            <th th:if="${locationStats.value.diffFromPrevDay} <=0"></th>
         </tr>
         </tbody>
     </table>
